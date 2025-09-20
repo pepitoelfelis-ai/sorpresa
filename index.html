@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -15,33 +15,30 @@
       background-size: 300px 300px;
       overflow: hidden;
       font-family: "Comic Sans MS", cursive;
-      border: 10px solid #ffb6c1;
-      box-shadow: 0 0 25px rgba(255, 105, 180, 0.7);
+      position: relative;
     }
 
-    /* Botón con degradado */
     #button {
       padding: 15px 30px;
       font-size: 20px;
       border: none;
-      border-radius: 30px;
-      background: linear-gradient(45deg, #ff4d6d, #ff80ab);
+      border-radius: 20px;
+      background-color: #ff4d6d;
       color: white;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-      transition: transform 0.3s, box-shadow 0.3s;
-      z-index: 2;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s;
+      z-index: 9999;
+      position: relative;
     }
 
     #button:hover {
       transform: scale(1.1);
-      box-shadow: 0 0 25px rgba(255, 20, 147, 0.8);
     }
 
-    /* Texto con efecto máquina de escribir */
     #message {
       position: absolute;
-      top: 18%;
+      top: 20%;
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 32px;
@@ -50,27 +47,11 @@
       display: none;
       text-align: center;
       z-index: 2;
-      white-space: nowrap;
-      border-right: 3px solid #ff1493;
-      overflow: hidden;
-      width: 0;
-      animation: typing 4s steps(40) forwards, blink 0.7s infinite;
-    }
-
-    @keyframes typing {
-      from { width: 0; }
-      to { width: 100%; }
-    }
-
-    @keyframes blink {
-      0% { border-color: transparent; }
-      50% { border-color: #ff1493; }
-      100% { border-color: transparent; }
     }
 
     #pd {
       position: absolute;
-      top: 32%;
+      top: 35%;
       left: 50%;
       transform: translate(-50%, -50%);
       font-size: 24px;
@@ -80,49 +61,44 @@
       z-index: 2;
     }
 
-    /* Snoopy animado flotando */
+    /* Imagen Snoopy */
     #snoopy {
       position: absolute;
-      bottom: 10px;
+      bottom: 40px; /* levantado para el césped */
       right: 50%;
-      transform: translateX(50%);
-      width: 240px;
+      transform: translateX(50%) scale(0.9);
+      width: 260px;
       opacity: 0;
-      transition: opacity 1.5s ease-in-out;
+      transition: opacity 1.5s ease-in-out, transform 0.8s ease-in-out;
       z-index: 2;
-      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 10px pink);
+      border-radius: 20px;
     }
 
     #snoopy.show {
       opacity: 1;
+      transform: translateX(50%) scale(1);
+      animation: float 3s ease-in-out infinite, heartbeat 2s infinite;
     }
 
     @keyframes float {
-      0%, 100% { transform: translateX(50%) translateY(0); }
-      50% { transform: translateX(50%) translateY(-15px); }
+      0%, 100% { transform: translateX(50%) translateY(0) scale(1); }
+      50% { transform: translateX(50%) translateY(-15px) scale(1); }
     }
 
-    /* Elementos animados */
-    .flower, .heart, .star {
+    @keyframes heartbeat {
+      0%, 100% { transform: translateX(50%) scale(1); }
+      25% { transform: translateX(50%) scale(1.05); }
+      50% { transform: translateX(50%) scale(0.95); }
+      75% { transform: translateX(50%) scale(1.08); }
+    }
+
+    /* Animación caída desde arriba */
+    .falling {
       position: absolute;
+      top: -50px;
       pointer-events: none;
       z-index: 1;
-    }
-
-    .flower {
-      top: -50px;
-      animation: fall linear infinite;
-    }
-
-    .heart {
-      bottom: -50px;
-      animation: rise linear infinite;
-    }
-
-    .star {
-      top: -50px;
-      animation: fall linear infinite;
-      color: gold;
     }
 
     @keyframes fall {
@@ -130,25 +106,130 @@
       100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
     }
 
-    @keyframes rise {
-      0% { transform: translateY(0) scale(1); opacity: 1; }
-      100% { transform: translateY(-110vh) scale(1.5); opacity: 0; }
+    /* Flores fijas en esquinas */
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: scale(0.8) rotate(0deg); }
+      100% { opacity: 1; transform: scale(1) rotate(var(--rotate)); }
+    }
+
+    @keyframes sway {
+      0% { transform: rotate(calc(var(--rotate) - 5deg)); }
+      50% { transform: rotate(calc(var(--rotate) + 5deg)); }
+      100% { transform: rotate(calc(var(--rotate) - 5deg)); }
+    }
+
+    .flower-corner {
+      position: absolute;
+      width: 180px;
+      z-index: 1;
+      opacity: 0;
+      animation: fadeIn 2s forwards, sway 4s ease-in-out infinite;
+      transform-origin: bottom center;
+    }
+
+    #flower-left {
+      bottom: 0;
+      left: 0;
+      --rotate: -15deg;
+    }
+
+    #flower-right {
+      bottom: 0;
+      right: 0;
+      --rotate: 15deg;
+    }
+
+    /* 🌱 CÉSPED */
+    #grass {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .blade {
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-bottom: 35px solid #228B22;
+      transform: scaleY(1.2);
+      animation: grass-sway 2s ease-in-out infinite alternate;
+      transform-origin: bottom center;
+    }
+
+    @keyframes grass-sway {
+      0% { transform: rotate(-4deg); }
+      100% { transform: rotate(4deg); }
+    }
+
+    /* 📱 Ajustes solo para móviles */
+    @media (max-width: 768px) {
+      #button {
+        font-size: 16px;
+        padding: 10px 20px;
+        margin-bottom: 180px; /* subido */
+      }
+      #message {
+        font-size: 22px;
+        top: 15%; /* más arriba */
+      }
+      #pd {
+        font-size: 18px;
+        top: 28%; /* subido */
+      }
+      #snoopy {
+        width: 180px;
+        bottom: 25px;
+      }
+      .flower-corner {
+        width: 120px;
+      }
+      #grass {
+        height: 40px;
+      }
     }
   </style>
 </head>
 <body>
   <button id="button">Un detallito para ti ❤</button>
-  <div id="message">Ten un feliz día, pasalo super bien hoy :D ❤</div>
+  <div id="message">Ten un feliz día, eres especial para mí ❤</div>
   <div id="pd">Pd: de mi para ti 🌸</div>
 
   <!-- Imagen Snoopy -->
-  <img id="snoopy" src="images.png" alt="Snoopy cariñoso">
+  <img id="snoopy" src="snoopy.png" alt="Snoopy cariñoso">
+
+  <!-- Flores en esquinas -->
+  <img id="flower-left" class="flower-corner" src="fotito-removebg-preview.png" alt="Flores izquierda">
+  <img id="flower-right" class="flower-corner" src="fotito-removebg-preview.png" alt="Flores derecha">
+
+  <!-- Césped -->
+  <div id="grass"></div>
 
   <script>
     const button = document.getElementById('button');
     const message = document.getElementById('message');
     const snoopy = document.getElementById('snoopy');
     const pd = document.getElementById('pd');
+    const flowers = document.querySelectorAll('.flower-corner');
+    const grass = document.getElementById('grass');
+
+    // Generar césped
+    for (let i = 0; i < 80; i++) {
+      const blade = document.createElement('div');
+      blade.classList.add('blade');
+      blade.style.borderBottomColor = `hsl(${100 + Math.random() * 40}, 60%, 30%)`; // verdes variados
+      blade.style.borderBottomWidth = (25 + Math.random() * 25) + 'px';
+      blade.style.transform = `scaleY(${1 + Math.random()}) rotate(${(Math.random()-0.5)*20}deg)`;
+      blade.style.animationDuration = (1.5 + Math.random()) + 's';
+      grass.appendChild(blade);
+    }
 
     button.addEventListener('click', () => {
       button.style.display = 'none';
@@ -156,37 +237,42 @@
       pd.style.display = 'block';
       snoopy.classList.add("show");
 
-      // Flores cayendo
+      // Mostrar flores fijas en las esquinas
+      flowers.forEach(flower => {
+        flower.style.opacity = "1";
+      });
+
+      // Animación de flores cayendo
       for (let i = 0; i < 25; i++) {
         const flower = document.createElement('div');
-        flower.classList.add('flower');
+        flower.classList.add('falling');
         flower.textContent = Math.random() > 0.5 ? '🌼' : '🌻';
         flower.style.left = Math.random() * 100 + 'vw';
-        flower.style.animationDuration = 4 + Math.random() * 3 + 's';
+        flower.style.animation = `fall ${4 + Math.random() * 3}s linear`;
         flower.style.fontSize = 20 + Math.random() * 20 + 'px';
         document.body.appendChild(flower);
         setTimeout(() => flower.remove(), 8000);
       }
 
-      // Corazones subiendo
-      for (let i = 0; i < 20; i++) {
+      // Corazones cayendo sincronizados con el latido
+      setInterval(() => {
         const heart = document.createElement('div');
-        heart.classList.add('heart');
+        heart.classList.add('falling');
         heart.textContent = '❤️';
         heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animationDuration = 5 + Math.random() * 3 + 's';
+        heart.style.animation = `fall 6s linear`;
         heart.style.fontSize = 20 + Math.random() * 25 + 'px';
         document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 8000);
-      }
+        setTimeout(() => heart.remove(), 7000);
+      }, 2000);
 
-      // Estrellitas brillantes
+      // Estrellitas cayendo
       for (let i = 0; i < 15; i++) {
         const star = document.createElement('div');
-        star.classList.add('star');
+        star.classList.add('falling');
         star.textContent = '✨';
         star.style.left = Math.random() * 100 + 'vw';
-        star.style.animationDuration = 3 + Math.random() * 3 + 's';
+        star.style.animation = `fall ${3 + Math.random() * 3}s linear`;
         star.style.fontSize = 16 + Math.random() * 20 + 'px';
         document.body.appendChild(star);
         setTimeout(() => star.remove(), 6000);
