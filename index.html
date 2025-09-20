@@ -1,7 +1,7 @@
     <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>sorpresa :D</title>
   <style>
     body {
@@ -10,12 +10,11 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      flex-direction: column;
-      background: url('A_seamless_floral_pattern_features_a_variety_of_ha.png') repeat;
-      background-size: 300px 300px;
       overflow: hidden;
       font-family: "Comic Sans MS", cursive;
       position: relative;
+      background: url('A_seamless_floral_pattern_features_a_variety_of_ha.png') repeat;
+      background-size: 300px 300px;
     }
 
     #button {
@@ -27,256 +26,250 @@
       color: white;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: transform 0.2s;
+      transition: transform 0.2s, opacity 0.25s;
       z-index: 9999;
       position: relative;
     }
+    #button:disabled { cursor: default; opacity: 0.6; }
 
-    #button:hover {
-      transform: scale(1.1);
+    #button:hover { transform: scale(1.06); }
+
+    /* Contenedor de textos */
+    #text-container {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+      width: 85%;
+      max-width: 650px;
+      text-align: center;
+      z-index: 5;
     }
 
-    #message {
-      position: absolute;
-      top: 20%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 32px;
+    .typewriter {
+      font-size: 28px;
       color: #ff1493;
       text-shadow: 2px 2px 5px white;
-      display: none;
-      text-align: center;
-      z-index: 2;
-    }
-
-    #pd {
-      position: absolute;
-      top: 35%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-size: 24px;
-      color: #ff69b4;
-      text-shadow: 1px 1px 3px white;
-      display: none;
-      z-index: 2;
-    }
-
-    /* Imagen Snoopy */
-    #snoopy {
-      position: absolute;
-      bottom: 40px; /* levantado para el césped */
-      right: 50%;
-      transform: translateX(50%) scale(0.9);
-      width: 260px;
+      white-space: pre-wrap;
+      overflow: visible;
+      border-right: 3px solid pink;
+      margin-bottom: 8px;
+      display: inline-block;
+      min-height: 2em;
       opacity: 0;
-      transition: opacity 1.5s ease-in-out, transform 0.8s ease-in-out;
-      z-index: 2;
-      filter: drop-shadow(0 0 10px pink);
-      border-radius: 20px;
+      transition: opacity 0.6s ease-in;
     }
 
-    #snoopy.show {
-      opacity: 1;
-      transform: translateX(50%) scale(1);
-      animation: float 3s ease-in-out infinite, heartbeat 2s infinite;
+    /* cursor blink */
+    @keyframes blink {
+      50% { border-color: transparent; }
+    }
+    .typewriter.cursor {
+      animation: blink 0.7s step-end infinite;
     }
 
-    @keyframes float {
-      0%, 100% { transform: translateX(50%) translateY(0) scale(1); }
-      50% { transform: translateX(50%) translateY(-15px) scale(1); }
-    }
+    #intro { font-size: 20px; color: #d63384; text-shadow: 1px 1px 3px white; line-height: 1.5; }
+    #pd { font-size: 22px; color: #ff69b4; text-shadow: 1px 1px 3px white; }
 
-    @keyframes heartbeat {
-      0%, 100% { transform: translateX(50%) scale(1); }
-      25% { transform: translateX(50%) scale(1.05); }
-      50% { transform: translateX(50%) scale(0.95); }
-      75% { transform: translateX(50%) scale(1.08); }
-    }
+    /* personajes */
+    #main-images { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); display:flex; gap:20px; z-index:5; }
+    .character { width:200px; opacity:0; transition: opacity 1.5s ease-in-out, transform 0.8s ease-in-out; filter: drop-shadow(0 0 10px pink); border-radius:20px; }
+    .character.show { opacity:1; animation: float 3s ease-in-out infinite, heartbeat 2s infinite; }
 
-    /* Animación caída desde arriba */
-    .falling {
-      position: absolute;
-      top: -50px;
-      pointer-events: none;
-      z-index: 1;
-    }
+    .corner-character { position:absolute; top:20px; width:150px; opacity:0; transition: opacity 1.5s ease-in-out, transform 0.8s ease-in-out; filter: drop-shadow(0 0 10px pink); z-index:5; }
+    #corner-left { left:20px; } #corner-right { right:20px; }
+    .corner-character.show { opacity:1; animation: float 3s ease-in-out infinite, heartbeat 2s infinite; }
 
-    @keyframes fall {
-      0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-    }
+    @keyframes float { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1); } }
+    @keyframes heartbeat { 0%,100% { transform: scale(1); } 25% { transform: scale(1.05); } 50% { transform: scale(0.95); } 75% { transform: scale(1.08); } }
 
-    /* Flores fijas en esquinas */
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: scale(0.8) rotate(0deg); }
-      100% { opacity: 1; transform: scale(1) rotate(var(--rotate)); }
-    }
+    /* Caida */
+    .falling { position:absolute; top:-50px; pointer-events:none; z-index:1; }
+    @keyframes fall { 0% { transform: translateY(-50px) rotate(0deg); opacity:1 } 100% { transform: translateY(110vh) rotate(360deg); opacity:0 } }
 
-    @keyframes sway {
-      0% { transform: rotate(calc(var(--rotate) - 5deg)); }
-      50% { transform: rotate(calc(var(--rotate) + 5deg)); }
-      100% { transform: rotate(calc(var(--rotate) - 5deg)); }
-    }
+    /* Césped */
+    #grass { position: absolute; bottom: 0; left: 0; width: 100%; height: 50px; display:flex; justify-content: space-around; align-items:flex-end; z-index:0; pointer-events:none; }
+    .blade { width:0; height:0; border-left:4px solid transparent; border-right:4px solid transparent; border-bottom:35px solid #228B22; transform:scaleY(1.2); animation: grass-sway 2s ease-in-out infinite alternate; transform-origin: bottom center; }
+    @keyframes grass-sway { 0% { transform: rotate(-4deg);} 100% { transform: rotate(4deg);} }
 
-    .flower-corner {
-      position: absolute;
-      width: 180px;
-      z-index: 1;
-      opacity: 0;
-      animation: fadeIn 2s forwards, sway 4s ease-in-out infinite;
-      transform-origin: bottom center;
-    }
+    /* Flores esquina inferior (imagen) */
+    .corner-flower { position:absolute; bottom:15px; width:140px; opacity:0.95; filter: drop-shadow(0 0 15px gold); animation: float 4s ease-in-out infinite, heartbeat 3s infinite; z-index:3; }
+    #bottom-left-flower { left:15px; } #bottom-right-flower { right:15px; }
 
-    #flower-left {
-      bottom: 0;
-      left: 0;
-      --rotate: -15deg;
-    }
+    /* Brillitos */
+    .sparkle { position:absolute; width:6px; height:6px; background:white; border-radius:50%; opacity:0.8; box-shadow: 0 0 10px gold; animation: twinkle 2s infinite alternate; z-index:2; }
+    @keyframes twinkle { from { opacity:0.2; transform:scale(0.8);} to { opacity:1; transform:scale(1.3);} }
 
-    #flower-right {
-      bottom: 0;
-      right: 0;
-      --rotate: 15deg;
-    }
-
-    /* 🌱 CÉSPED */
-    #grass {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 50px;
-      display: flex;
-      justify-content: space-around;
-      align-items: flex-end;
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .blade {
-      width: 0;
-      height: 0;
-      border-left: 4px solid transparent;
-      border-right: 4px solid transparent;
-      border-bottom: 35px solid #228B22;
-      transform: scaleY(1.2);
-      animation: grass-sway 2s ease-in-out infinite alternate;
-      transform-origin: bottom center;
-    }
-
-    @keyframes grass-sway {
-      0% { transform: rotate(-4deg); }
-      100% { transform: rotate(4deg); }
-    }
-
-    /* 📱 Ajustes solo para móviles */
-    @media (max-width: 768px) {
-      #button {
-        font-size: 16px;
-        padding: 10px 20px;
-        margin-bottom: 180px; /* subido */
-      }
-      #message {
-        font-size: 22px;
-        top: 15%; /* más arriba */
-      }
-      #pd {
-        font-size: 18px;
-        top: 28%; /* subido */
-      }
-      #snoopy {
-        width: 180px;
-        bottom: 25px;
-      }
-      .flower-corner {
-        width: 120px;
-      }
-      #grass {
-        height: 40px;
-      }
+    @media (max-width:768px){
+      .character{ width:150px; } .corner-character{ width:120px; } .corner-flower{ width:100px; }
+      .typewriter{ font-size:20px; }
     }
   </style>
 </head>
 <body>
   <button id="button">Un detallito para ti ❤</button>
-  <div id="message">Ten un feliz día, pasalo super bien hoy :D ❤</div>
-  <div id="pd">Pd: de mi para una chica muy linda 🌸</div>
 
-  <!-- Imagen Snoopy -->
-  <img id="snoopy" src="snoopy.png" alt="Snoopy cariñoso">
+  <div id="text-container">
+    <div id="message" class="typewriter"></div>
+    <div id="intro" class="typewriter"></div>
+    <div id="pd" class="typewriter"></div>
+  </div>
 
-  <!-- Flores en esquinas -->
-  <img id="flower-left" class="flower-corner" src="fotito-removebg-preview.png" alt="Flores izquierda">
-  <img id="flower-right" class="flower-corner" src="fotito-removebg-preview.png" alt="Flores derecha">
+  <!-- imágenes centrales / esquinas (asegúrate de tener estos archivos) -->
+  <div id="main-images">
+    <img id="snoopy" class="character" src="snoopy.png" alt="Snoopy cariñoso">
+    <img id="extra" class="character" src="imgD-removebg-preview.png" alt="Extra imagen">
+  </div>
 
-  <!-- Césped -->
+  <img id="corner-left" class="corner-character" src="imD-removebg-preview.png" alt="esq izq">
+  <img id="corner-right" class="corner-character" src="imD-removebg-preview.png" alt="esq der">
+
+  <!-- Esquinas inferiores con girasoles -->
+  <img class="corner-flower" id="bottom-left-flower" src="fotito-removebg-preview.png" alt="Girasoles esquina izq">
+  <img class="corner-flower" id="bottom-right-flower" src="fotito-removebg-preview.png" alt="Girasoles esquina der">
+
   <div id="grass"></div>
 
   <script>
-    const button = document.getElementById('button');
-    const message = document.getElementById('message');
-    const snoopy = document.getElementById('snoopy');
-    const pd = document.getElementById('pd');
-    const flowers = document.querySelectorAll('.flower-corner');
-    const grass = document.getElementById('grass');
+    document.addEventListener('DOMContentLoaded', () => {
+      const button = document.getElementById('button');
+      const textContainer = document.getElementById('text-container');
+      const snoopy = document.getElementById('snoopy');
+      const extra = document.getElementById('extra');
+      const cornerLeft = document.getElementById('corner-left');
+      const cornerRight = document.getElementById('corner-right');
+      const grass = document.getElementById('grass');
 
-    // Generar césped
-    for (let i = 0; i < 80; i++) {
-      const blade = document.createElement('div');
-      blade.classList.add('blade');
-      blade.style.borderBottomColor = `hsl(${100 + Math.random() * 40}, 60%, 30%)`; // verdes variados
-      blade.style.borderBottomWidth = (25 + Math.random() * 25) + 'px';
-      blade.style.transform = `scaleY(${1 + Math.random()}) rotate(${(Math.random()-0.5)*20}deg)`;
-      blade.style.animationDuration = (1.5 + Math.random()) + 's';
-      grass.appendChild(blade);
-    }
+      // textos para la secuencia
+      const texts = [
+        { id: "message", text: "Ten un feliz día, pásalo super bien hoy :D ❤" },
+        { id: "intro", text: "jelou que tal, te hice este pequeño detalle pq me salió en tt algo similar y quise hacerte algo para ti así tipo flores amarillas en programación. Espero te guste y te lo hice con mucho mucho cariño 😊." },
+        { id: "pd", text: "Pd: de mi para una chica muy linda 🌸" }
+      ];
 
-    button.addEventListener('click', () => {
-      button.style.display = 'none';
-      message.style.display = 'block';
-      pd.style.display = 'block';
-      snoopy.classList.add("show");
+      // typewriter con fade-in y cursor blink
+      function typeWriterEffect(element, text, delay, callback) {
+        element.style.opacity = 1;               // fade-in
+        element.classList.add('cursor');         // cursor blink
+        element.textContent = "";
+        let i = 0;
+        function typing() {
+          if (i < text.length) {
+            element.textContent += text.charAt(i);
+            i++;
+            setTimeout(typing, delay);
+          } else {
+            element.classList.remove('cursor');
+            element.style.borderRight = "none";
+            if (callback) callback();
+          }
+        }
+        typing();
+      }
 
-      // Mostrar flores fijas en las esquinas
-      flowers.forEach(flower => {
-        flower.style.opacity = "1";
-      });
+      function startTypingSequence() {
+        let index = 0;
+        function next() {
+          if (index < texts.length) {
+            const { id, text } = texts[index];
+            const el = document.getElementById(id);
+            typeWriterEffect(el, text, 45, () => {
+              index++;
+              // Un pequeño retardo entre bloques para que respire
+              setTimeout(next, 300);
+            });
+          }
+        }
+        next();
+      }
 
-      // Animación de flores cayendo
+      // Generar césped
+      for (let i = 0; i < 80; i++) {
+        const blade = document.createElement('div');
+        blade.classList.add('blade');
+        blade.style.borderBottomColor = `hsl(${100 + Math.random() * 40}, 60%, 30%)`;
+        blade.style.borderBottomWidth = (25 + Math.random() * 25) + 'px';
+        blade.style.transform = `scaleY(${1 + Math.random()}) rotate(${(Math.random()-0.5)*20}deg)`;
+        blade.style.animationDuration = (1.5 + Math.random()) + 's';
+        grass.appendChild(blade);
+      }
+
+      // Generar brillitos
       for (let i = 0; i < 25; i++) {
-        const flower = document.createElement('div');
-        flower.classList.add('falling');
-        flower.textContent = Math.random() > 0.5 ? '🌼' : '🌻';
-        flower.style.left = Math.random() * 100 + 'vw';
-        flower.style.animation = `fall ${4 + Math.random() * 3}s linear`;
-        flower.style.fontSize = 20 + Math.random() * 20 + 'px';
-        document.body.appendChild(flower);
-        setTimeout(() => flower.remove(), 8000);
+        const sparkle = document.createElement('div');
+        sparkle.classList.add('sparkle');
+        sparkle.style.left = Math.random() * 100 + 'vw';
+        sparkle.style.top = Math.random() * 100 + 'vh';
+        sparkle.style.animationDuration = (1.2 + Math.random()*1.8) + 's';
+        document.body.appendChild(sparkle);
       }
 
-      // Corazones cayendo sincronizados con el latido
-      setInterval(() => {
-        const heart = document.createElement('div');
-        heart.classList.add('falling');
-        heart.textContent = '❤️';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.animation = `fall 6s linear`;
-        heart.style.fontSize = 20 + Math.random() * 25 + 'px';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 7000);
-      }, 2000);
+      // controla que el intervalo de corazones solo se inicie una vez
+      let heartsInterval = null;
 
-      // Estrellitas cayendo
-      for (let i = 0; i < 15; i++) {
-        const star = document.createElement('div');
-        star.classList.add('falling');
-        star.textContent = '✨';
-        star.style.left = Math.random() * 100 + 'vw';
-        star.style.animation = `fall ${3 + Math.random() * 3}s linear`;
-        star.style.fontSize = 16 + Math.random() * 20 + 'px';
-        document.body.appendChild(star);
-        setTimeout(() => star.remove(), 6000);
-      }
+      // Evento del botón: se añade con { once: true } para seguridad extra
+      button.addEventListener('click', function handleClick () {
+        // Evita doble disparo
+        button.disabled = true;
+        button.style.pointerEvents = 'none';
+        // Desaparece con suave transición
+        button.style.opacity = 0;
+        setTimeout(() => button.style.display = 'none', 250);
+
+        // muestra el contenedor de texto
+        textContainer.style.display = 'flex';
+
+        // Mostrar personajes (si existen)
+        if (snoopy) snoopy.classList.add('show');
+        if (extra) extra.classList.add('show');
+        if (cornerLeft) cornerLeft.classList.add('show');
+        if (cornerRight) cornerRight.classList.add('show');
+
+        // iniciar la secuencia de escritura
+        startTypingSequence();
+
+        // Flores cayendo (emoji)
+        for (let i = 0; i < 25; i++) {
+          const flower = document.createElement('div');
+          flower.classList.add('falling');
+          flower.textContent = Math.random() > 0.5 ? '🌼' : '🌻';
+          flower.style.left = Math.random() * 100 + 'vw';
+          flower.style.animation = `fall ${4 + Math.random() * 3}s linear`;
+          flower.style.fontSize = 20 + Math.random() * 20 + 'px';
+          document.body.appendChild(flower);
+          setTimeout(() => flower.remove(), 8000);
+        }
+
+        // Estrellitas cayendo
+        for (let i = 0; i < 15; i++) {
+          const star = document.createElement('div');
+          star.classList.add('falling');
+          star.textContent = '✨';
+          star.style.left = Math.random() * 100 + 'vw';
+          star.style.animation = `fall ${3 + Math.random() * 3}s linear`;
+          star.style.fontSize = 16 + Math.random() * 20 + 'px';
+          document.body.appendChild(star);
+          setTimeout(() => star.remove(), 6000);
+        }
+
+        // Corazones infinitos (inicia sólo una vez)
+        if (!heartsInterval) {
+          heartsInterval = setInterval(() => {
+            const heart = document.createElement('div');
+            heart.classList.add('falling');
+            heart.textContent = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animation = `fall 6s linear`;
+            heart.style.fontSize = 20 + Math.random() * 25 + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 7000);
+          }, 2000);
+        }
+      }, { once: true }); // garantia: el listener se ejecuta una vez
     });
   </script>
 </body>
